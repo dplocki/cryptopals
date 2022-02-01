@@ -24,3 +24,17 @@ func EncodeFixedXor(input string, key string) string {
 	result := hex.EncodeToString(output_byte)
 	return result
 }
+
+func EncodeRepeatingXor(input string, key string) string {
+	inputByte := []byte(input)
+	inputKey := []byte(key)
+	keySize := len(inputKey)
+	outputByte := make([]byte, len(inputByte))
+
+	for i, value := range inputByte {
+		outputByte[i] = value ^ inputKey[i%keySize]
+	}
+
+	result := hex.EncodeToString(outputByte)
+	return result
+}
