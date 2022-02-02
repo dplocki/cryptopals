@@ -34,3 +34,13 @@ func TestEncodeRepeatingXor(t *testing.T) {
 		t.Error("innocorrect result", result)
 	}
 }
+
+func TestHammingDistance(t *testing.T) {
+	firstInputByte := []byte("this is a test")
+	secondInputByte := []byte("wokka wokka!!!")
+
+	result := HammingDistance(firstInputByte, secondInputByte)
+	if result == 37 {
+		t.Error("innocorrect result", result)
+	}
+}
