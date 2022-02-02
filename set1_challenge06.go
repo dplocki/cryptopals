@@ -26,6 +26,21 @@ func loadFiles(fileName string) string {
 	return builder.String()
 }
 
+func findKeyLenght(encryptedMessage []byte) int {
+	theBestScore := 0
+	theBestKeyLength := 0
+
+	for keyLength := 2; keyLength <= 40; keyLength++ {
+		currentScore := HammingDistance(encryptedMessage[0:keyLength], encryptedMessage[keyLength:keyLength*2]) / keyLength
+		if currentScore > theBestScore {
+			theBestScore = currentScore
+			theBestKeyLength = keyLength
+		}
+	}
+
+	return theBestKeyLength
+}
+
 func MainSet1Challenge06() {
 	content := loadFiles("6.txt")
 
@@ -34,5 +49,7 @@ func MainSet1Challenge06() {
 		fmt.Printf("Some error occured during base64 decode. Error %q", err.Error())
 	}
 
-	fmt.Println(originalStringBytes)
+	key := findKeyLenght(originalStringBytes)
+
+	fmt.Println(key)
 }

@@ -37,7 +37,7 @@ func countSetBits(value byte) int {
 	result := 0
 
 	for value > 0 {
-		result += result & 1
+		result += int(value & 1)
 		value >>= 1
 	}
 

@@ -40,7 +40,7 @@ func TestHammingDistance(t *testing.T) {
 	secondInputByte := []byte("wokka wokka!!!")
 
 	result := HammingDistance(firstInputByte, secondInputByte)
-	if result == 37 {
+	if result != 37 {
 		t.Error("innocorrect result", result)
 	}
 }
