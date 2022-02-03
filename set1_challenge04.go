@@ -2,19 +2,21 @@ package main
 
 import (
 	"bufio"
+	"encoding/hex"
 	"fmt"
 	"os"
 )
 
-func findTheEncodedLine(scanner *bufio.Scanner) (string, byte) {
-	var theBestEncodedLine string
+func findTheEncodedLine(scanner *bufio.Scanner) ([]byte, byte) {
+	var theBestEncodedLine []byte
 	var thebestKey byte
 	theBestScore := 0
 
 	for scanner.Scan() {
 		line := scanner.Text()
+		inputByte, _ := hex.DecodeString(line)
 
-		encodedLine, key, score := CheckAllCombinationOfSingleKey(line)
+		encodedLine, key, score := CheckAllCombinationOfSingleKey(inputByte)
 
 		if score > theBestScore {
 			theBestScore = score

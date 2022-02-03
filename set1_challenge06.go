@@ -26,7 +26,7 @@ func loadFiles(fileName string) string {
 	return builder.String()
 }
 
-func findKeyLenght(encryptedMessage []byte) int {
+func findKeyLength(encryptedMessage []byte) int {
 	theBestScore := 0
 	theBestKeyLength := 0
 
@@ -49,7 +49,7 @@ func MainSet1Challenge06() {
 		fmt.Printf("Some error occured during base64 decode. Error %q", err.Error())
 	}
 
-	key := findKeyLenght(originalStringBytes)
+	key := findKeyLength(originalStringBytes)
 
 	fmt.Println(key)
 }

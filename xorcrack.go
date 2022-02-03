@@ -1,20 +1,25 @@
 package main
 
-import "encoding/hex"
+type EmptyType struct{}
+type Set map[byte]EmptyType
 
-var englishMostCommon []byte = []byte{' ', 'e', 't', 'a', 'o', 'i', 'n', 's', 'h', 'r', 'd', 'l', 'u'}
-
-func buildScoreMap(base []byte) map[byte]struct{} {
-	result := map[byte]struct{}{}
-
-	for _, value := range base {
-		result[value] = struct{}{}
-	}
-
-	return result
+var englishMostCommon Set = Set{
+	' ': EmptyType{},
+	'e': EmptyType{},
+	't': EmptyType{},
+	'a': EmptyType{},
+	'o': EmptyType{},
+	'i': EmptyType{},
+	'n': EmptyType{},
+	's': EmptyType{},
+	'h': EmptyType{},
+	'r': EmptyType{},
+	'd': EmptyType{},
+	'l': EmptyType{},
+	'u': EmptyType{},
 }
 
-func checkKey(scoringTable map[byte]struct{}, inputByte []byte, key byte) ([]byte, int) {
+func checkKey(scoringTable Set, inputByte []byte, key byte) ([]byte, int) {
 	outputByte := make([]byte, len(inputByte))
 	score := 0
 
@@ -30,16 +35,13 @@ func checkKey(scoringTable map[byte]struct{}, inputByte []byte, key byte) ([]byt
 	return outputByte, score
 }
 
-func CheckAllCombinationOfSingleKey(input string) (string, byte, int) {
-	inputByte, _ := hex.DecodeString(input)
-	letterCount := buildScoreMap(englishMostCommon)
-
+func CheckAllCombinationOfSingleKey(input []byte) ([]byte, byte, int) {
 	var bestKey byte
 	var bestOutput []byte
 	scoreOfBestKey := 0
 
 	for key := byte(0); key < 255; key++ {
-		outputByte, currentScore := checkKey(letterCount, inputByte, key)
+		outputByte, currentScore := checkKey(englishMostCommon, input, key)
 
 		if currentScore > scoreOfBestKey {
 			bestKey = key
@@ -48,5 +50,5 @@ func CheckAllCombinationOfSingleKey(input string) (string, byte, int) {
 		}
 	}
 
-	return string(bestOutput), bestKey, scoreOfBestKey
+	return bestOutput, bestKey, scoreOfBestKey
 }

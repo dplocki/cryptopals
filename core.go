@@ -33,11 +33,11 @@ func EncodeRepeatingXor(input []byte, key []byte) []byte {
 	return outputByte
 }
 
-func countSetBits(value byte) int {
-	result := 0
+func countSetBits(value byte) byte {
+	result := byte(0)
 
 	for value > 0 {
-		result += int(value & 1)
+		result += value & 1
 		value >>= 1
 	}
 
@@ -48,7 +48,7 @@ func HammingDistance(firstInput []byte, secondInput []byte) int {
 	result := 0
 
 	for i := 0; i < len(firstInput); i++ {
-		result += countSetBits(firstInput[i] ^ secondInput[i])
+		result += int(countSetBits(firstInput[i] ^ secondInput[i]))
 	}
 
 	return result
