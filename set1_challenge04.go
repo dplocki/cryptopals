@@ -42,7 +42,7 @@ func MainSet1Challenge04() {
 	if err := scanner.Err(); err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println("Encoded line:", encodedLine)
-		fmt.Println("Key:", key)
+		fmt.Println("Encoded line:", string(encodedLine))
+		fmt.Println("Key:", string(key))
 	}
 }

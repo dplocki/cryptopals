@@ -1,34 +1,33 @@
 package main
 
-type EmptyType struct{}
-type Set map[byte]EmptyType
+type CommonCharacterTable map[byte]byte
 
-var englishMostCommon Set = Set{
-	' ': EmptyType{},
-	'e': EmptyType{},
-	't': EmptyType{},
-	'a': EmptyType{},
-	'o': EmptyType{},
-	'i': EmptyType{},
-	'n': EmptyType{},
-	's': EmptyType{},
-	'h': EmptyType{},
-	'r': EmptyType{},
-	'd': EmptyType{},
-	'l': EmptyType{},
-	'u': EmptyType{},
+var englishMostCommon CommonCharacterTable = CommonCharacterTable{
+	' ': 13,
+	'e': 12,
+	't': 11,
+	'a': 10,
+	'o': 9,
+	'i': 8,
+	'n': 7,
+	's': 6,
+	'h': 5,
+	'r': 4,
+	'd': 3,
+	'l': 2,
+	'u': 1,
 }
 
-func checkKey(scoringTable Set, inputByte []byte, key byte) ([]byte, int) {
+func checkKey(scoringTable CommonCharacterTable, inputByte []byte, key byte) ([]byte, int) {
 	outputByte := make([]byte, len(inputByte))
 	score := 0
 
 	for i, value := range inputByte {
 		decoded_value := value ^ key
 		outputByte[i] = decoded_value
-		_, exists := scoringTable[decoded_value]
+		value, exists := scoringTable[decoded_value]
 		if exists {
-			score++
+			score += int(value)
 		}
 	}
 

@@ -11,6 +11,6 @@ func MainSet1Challenge03() {
 
 	bestOutput, key, _ := CheckAllCombinationOfSingleKey(inputByte)
 
-	fmt.Println("Message:", bestOutput)
-	fmt.Println("Key:", key)
+	fmt.Println("Message:", string(bestOutput))
+	fmt.Println("Key:", string(key))
 }
