@@ -4,6 +4,7 @@ type CommonCharacterTable map[byte]byte
 
 var englishMostCommon CommonCharacterTable = CommonCharacterTable{
 	' ': 13,
+
 	'e': 12,
 	't': 11,
 	'a': 10,
@@ -16,6 +17,19 @@ var englishMostCommon CommonCharacterTable = CommonCharacterTable{
 	'd': 3,
 	'l': 2,
 	'u': 1,
+
+	'E': 12,
+	'T': 11,
+	'A': 10,
+	'O': 9,
+	'I': 8,
+	'N': 7,
+	'S': 6,
+	'H': 5,
+	'R': 4,
+	'D': 3,
+	'L': 2,
+	'U': 1,
 }
 
 func checkKey(scoringTable CommonCharacterTable, inputByte []byte, key byte) ([]byte, int) {
@@ -23,9 +37,9 @@ func checkKey(scoringTable CommonCharacterTable, inputByte []byte, key byte) ([]
 	score := 0
 
 	for i, value := range inputByte {
-		decoded_value := value ^ key
-		outputByte[i] = decoded_value
-		value, exists := scoringTable[decoded_value]
+		decodedValue := value ^ key
+		outputByte[i] = decodedValue
+		value, exists := scoringTable[decodedValue]
 		if exists {
 			score += int(value)
 		}

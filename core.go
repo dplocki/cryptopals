@@ -44,11 +44,11 @@ func countSetBits(value byte) byte {
 	return result
 }
 
-func HammingDistance(firstInput []byte, secondInput []byte) int {
-	result := 0
+func HammingDistance(firstInput []byte, secondInput []byte) uint {
+	result := uint(0)
 
 	for i := 0; i < len(firstInput); i++ {
-		result += int(countSetBits(firstInput[i] ^ secondInput[i]))
+		result += uint(countSetBits(firstInput[i] ^ secondInput[i]))
 	}
 
 	return result

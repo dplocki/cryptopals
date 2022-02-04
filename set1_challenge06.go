@@ -4,16 +4,19 @@ import (
 	"bufio"
 	"encoding/base64"
 	"fmt"
+	"math"
 	"os"
 	"strings"
 )
+
+const MaxUint uint = ^uint(0)
 
 func loadFiles(fileName string) string {
 	builder := strings.Builder{}
 
 	file, readError := os.Open(fileName)
 	if readError != nil {
-		fmt.Println(readError)
+		panic("cannot load file")
 	}
 
 	defer file.Close()
@@ -26,16 +29,19 @@ func loadFiles(fileName string) string {
 	return builder.String()
 }
 
-func findKeyLength(encryptedMessage []byte) int {
-	theBestScore := 0
-	theBestKeyLength := 0
+func findKeyLength(encryptedMessage []byte) byte {
+	theBestScore := math.MaxFloat64
+	theBestKeyLength := byte(0)
 
-	for keyLength := 2; keyLength <= 40; keyLength++ {
-		currentScore := HammingDistance(encryptedMessage[0:keyLength], encryptedMessage[keyLength:keyLength*2]) / keyLength
-		if currentScore > theBestScore {
-			theBestScore = currentScore
-			theBestKeyLength = keyLength
+	const blockSize byte = 3
+	for keyLength := byte(2); keyLength <= 40; keyLength++ {
+		currentScore := float64(HammingDistance(encryptedMessage[0:keyLength*blockSize], encryptedMessage[keyLength*blockSize:keyLength*blockSize*2])) / float64(keyLength*blockSize)
+		if currentScore >= theBestScore {
+			continue
 		}
+
+		theBestScore = currentScore
+		theBestKeyLength = keyLength
 	}
 
 	return theBestKeyLength
@@ -46,10 +52,26 @@ func MainSet1Challenge06() {
 
 	originalStringBytes, err := base64.StdEncoding.DecodeString(content)
 	if err != nil {
-		fmt.Printf("Some error occured during base64 decode. Error %q", err.Error())
+		panic(fmt.Errorf("some error occured during base64 decode. Error %q", err.Error()))
 	}
 
-	key := findKeyLength(originalStringBytes)
+	keyLength := findKeyLength(originalStringBytes)
+	key := make([]byte, keyLength)
 
-	fmt.Println(key)
+	sampleSize := len(originalStringBytes) / int(keyLength)
+	for i := byte(0); i < keyLength; i++ {
+		column := make([]byte, sampleSize)
+
+		for j := 0; j < sampleSize; j++ {
+			column[j] = originalStringBytes[int(i)+j*int(keyLength)]
+		}
+
+		_, singleKeyCharacter, _ := CheckAllCombinationOfSingleKey(column)
+		key[i] = singleKeyCharacter
+	}
+
+	result := EncodeRepeatingXor(originalStringBytes, key)
+
+	fmt.Println("Key:", string(key))
+	fmt.Println("Message:\n", string(result))
 }
