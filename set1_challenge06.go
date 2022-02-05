@@ -1,33 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"encoding/base64"
 	"fmt"
 	"math"
-	"os"
-	"strings"
 )
 
 const MaxUint uint = ^uint(0)
-
-func loadFiles(fileName string) string {
-	builder := strings.Builder{}
-
-	file, readError := os.Open(fileName)
-	if readError != nil {
-		panic("cannot load file")
-	}
-
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		builder.WriteString(scanner.Text())
-	}
-
-	return builder.String()
-}
 
 func findKeyLength(encryptedMessage []byte) byte {
 	theBestScore := math.MaxFloat64
@@ -48,7 +27,7 @@ func findKeyLength(encryptedMessage []byte) byte {
 }
 
 func MainSet1Challenge06() {
-	content := loadFiles("6.txt")
+	content := LoadFileContentAsString("6.txt")
 
 	originalStringBytes, err := base64.StdEncoding.DecodeString(content)
 	if err != nil {
