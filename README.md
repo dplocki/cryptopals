@@ -30,3 +30,7 @@ In order to detect human-readable text, we need to mechanicly recognise English.
 Original solution, calculating how much the most common letters is in the text seems work for simple task. It was not sufficient for breaking the **set1/challenge**.
 
 I have add letter score value (the more common letter, there more score it provides). But finally the problem was within my key length function.
+
+### AES in ECB mode
+
+The Golang package [crypto](https://pkg.go.dev/crypto) doesn't support the ECB mode. [Wonder why](https://github.com/golang/go/issues/5597). Anyway it is easy to implement... if you know enought about AES algorythm and its implemention.
