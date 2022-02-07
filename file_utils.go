@@ -6,37 +6,51 @@ import (
 	"strings"
 )
 
-func LoadFileContentAsString(fileName string) string {
-	builder := strings.Builder{}
+func readlines(path string) (<-chan string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
 
-	file, readError := os.Open(fileName)
+	scanner := bufio.NewScanner(file)
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	chanel := make(chan string)
+	go func() {
+		for scanner.Scan() {
+			chanel <- scanner.Text()
+		}
+		close(chanel)
+	}()
+
+	return chanel, nil
+}
+
+func LoadFileContentAsString(fileName string) string {
+	reader, readError := readlines(fileName)
 	if readError != nil {
 		panic("cannot load file")
 	}
 
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		builder.WriteString(scanner.Text())
+	builder := strings.Builder{}
+	for line := range reader {
+		builder.WriteString(line)
 	}
 
 	return builder.String()
 }
 
 func LoadFileContentAsStringsArray(fileName string) []string {
-	result := []string{}
-
-	file, readError := os.Open(fileName)
+	reader, readError := readlines(fileName)
 	if readError != nil {
 		panic("cannot load file")
 	}
 
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		result = append(result, scanner.Text())
+	result := []string{}
+	for line := range reader {
+		result = append(result, line)
 	}
 
 	return result
