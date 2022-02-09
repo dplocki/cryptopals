@@ -53,3 +53,18 @@ func HammingDistance(firstInput []byte, secondInput []byte) uint {
 
 	return result
 }
+
+func AddPaddingToBlock(block []byte, blockSize int) []byte {
+	result := make([]byte, blockSize)
+
+	for i := 0; i < len(block); i++ {
+		result[i] = block[i]
+	}
+
+	needed := byte(blockSize - len(block))
+	for i := len(block); i < blockSize; i++ {
+		result[i] = needed
+	}
+
+	return result
+}
