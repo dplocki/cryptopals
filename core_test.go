@@ -16,8 +16,9 @@ func TestHexDecodeToBase64(t *testing.T) {
 func TestEncodeFixedXor(t *testing.T) {
 	input, _ := hex.DecodeString("1c0111001f010100061a024b53535009181c")
 	key, _ := hex.DecodeString("686974207468652062756c6c277320657965")
+	result := make([]byte, len(key))
 
-	result := EncodeFixedXor(input, key)
+	EncodeFixedXor(result, input, key)
 
 	if hex.EncodeToString(result) != "746865206b696420646f6e277420706c6179" {
 		t.Error("innocorrect result", result)

@@ -12,14 +12,10 @@ func HexDecodeToBase64(input string) string {
 	return result
 }
 
-func EncodeFixedXor(input []byte, key []byte) []byte {
-	outputByte := make([]byte, len(input))
-
-	for i, value := range input {
-		outputByte[i] = value ^ key[i]
+func EncodeFixedXor(dst, src, key []byte) {
+	for i, value := range key {
+		dst[i] = src[i] ^ value
 	}
-
-	return outputByte
 }
 
 func EncodeRepeatingXor(input []byte, key []byte) []byte {

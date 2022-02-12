@@ -18,9 +18,7 @@ func DecryptAES128CBC(block cipher.Block, dst, src []byte) {
 	for len(src) > 0 {
 		block.Decrypt(dst, src[:bs])
 
-		for i, value := range previous[:bs] {
-			dst[i] ^= value
-		}
+		EncodeFixedXor(dst, dst, previous[:bs])
 
 		previous = src[:bs]
 		src = src[bs:]
