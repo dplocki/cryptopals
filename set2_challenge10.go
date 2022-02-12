@@ -8,7 +8,24 @@ import (
 )
 
 func DecryptAES128CBC(block cipher.Block, dst, src []byte) {
+	bs := block.BlockSize()
 
+	if len(src)%bs != 0 {
+		panic("Need a multiple of the blocksize")
+	}
+
+	previous := make([]byte, bs)
+	for len(src) > 0 {
+		block.Decrypt(dst, src[:bs])
+
+		for i, value := range previous[:bs] {
+			dst[i] ^= value
+		}
+
+		previous = src[:bs]
+		src = src[bs:]
+		dst = dst[bs:]
+	}
 }
 
 func MainSet2Challenge10() {
@@ -24,9 +41,9 @@ func MainSet2Challenge10() {
 		panic("cannot create cipher")
 	}
 
-	decripted := make([]byte, len(originalStringBytes))
+	plaintext := make([]byte, len(originalStringBytes))
 
-	DecryptAES128CBC(block, decripted, originalStringBytes)
+	DecryptAES128CBC(block, plaintext, originalStringBytes)
 
-	println(string(decripted))
+	println(string(plaintext))
 }
