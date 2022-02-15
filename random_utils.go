@@ -1,10 +1,17 @@
 package main
 
-import "crypto/rand"
+import (
+	"crypto/rand"
+)
+
+func GenRandomBytes(size int) (bulk []byte, err error) {
+	bulk = make([]byte, size)
+	_, err = rand.Read(bulk)
+	return
+}
 
 func GenerateAESKey() []byte {
-	key := make([]byte, 16)
-	_, err := rand.Read(key)
+	key, err := GenRandomBytes(16)
 	if err != nil {
 		panic("cannot generate key")
 	}

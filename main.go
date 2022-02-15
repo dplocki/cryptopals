@@ -17,5 +17,8 @@ func main() {
 	// MainSet1Challenge08()
 
 	// Solution for the Set2/Challenge10
-	MainSet2Challenge10()
+	// MainSet2Challenge10()
+
+	// Solution for the Set2/Challenge11
+	MainSet2Challenge11()
 }

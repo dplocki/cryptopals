@@ -7,14 +7,14 @@ import (
 	"fmt"
 )
 
-func DecryptAES128CBC(block cipher.Block, dst, src []byte) {
+func DecryptAES128CBC(block cipher.Block, dst, src, iv []byte) {
 	bs := block.BlockSize()
 
 	if len(src)%bs != 0 {
 		panic("Need a multiple of the blocksize")
 	}
 
-	previous := make([]byte, bs)
+	previous := iv
 	for len(src) > 0 {
 		block.Decrypt(dst, src[:bs])
 
@@ -41,7 +41,8 @@ func MainSet2Challenge10() {
 
 	plaintext := make([]byte, len(originalStringBytes))
 
-	DecryptAES128CBC(block, plaintext, originalStringBytes)
+	iv := make([]byte, aes.BlockSize)
+	DecryptAES128CBC(block, plaintext, originalStringBytes, iv)
 
 	println(string(plaintext))
 }
