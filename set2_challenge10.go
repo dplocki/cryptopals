@@ -2,29 +2,9 @@ package main
 
 import (
 	"crypto/aes"
-	"crypto/cipher"
 	"encoding/base64"
 	"fmt"
 )
-
-func DecryptAES128CBC(block cipher.Block, dst, src, iv []byte) {
-	bs := block.BlockSize()
-
-	if len(src)%bs != 0 {
-		panic("Need a multiple of the blocksize")
-	}
-
-	previous := iv
-	for len(src) > 0 {
-		block.Decrypt(dst, src[:bs])
-
-		EncodeFixedXor(dst, dst, previous[:bs])
-
-		previous = src[:bs]
-		src = src[bs:]
-		dst = dst[bs:]
-	}
-}
 
 func MainSet2Challenge10() {
 	content := LoadFileContentAsString("10.txt")

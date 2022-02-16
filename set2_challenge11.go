@@ -37,13 +37,13 @@ func EncryptionOracle(key, message []byte) []byte {
 		print("Encrypt by AES128 ECB")
 		EncryptAES128ECB(block, result, message)
 	} else {
-		print("Encrypt by AES128 ECB")
-		_, err := GenRandomBytes(block.BlockSize())
+		print("Encrypt by AES128 CBC")
+		iv, err := GenRandomBytes(block.BlockSize())
 		if err != nil {
 			panic("cannot generate iv")
 		}
 
-		panic("missing")
+		EncryptAES128CBC(block, result, message, iv)
 	}
 
 	return result
