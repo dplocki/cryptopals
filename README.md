@@ -6,6 +6,10 @@ My approach to Cryptopals challenges. Written in ~~Python~~ Go.
 
 The link: [cryptopals.com](https://cryptopals.com/)
 
+## Warning
+
+I hope I don't have explain this, but just stating the obvious: **do not use any of the code available in this repository in production cryptographic purposes**. The whole point of this repository is for me to learn.
+
 ## The language change
 
 Originaly I was implementing this project in Python. I have decided to switch because:
@@ -34,3 +38,7 @@ I have add letter score value (the more common letter, there more score it provi
 ### AES in ECB mode
 
 The Golang package [crypto](https://pkg.go.dev/crypto) doesn't support the ECB mode. [Wonder why](https://github.com/golang/go/issues/5597). Anyway it is easy to implement... if you know enought about AES algorythm and its implemention.
+
+### Don't implement your own cryptographic
+
+If this challenges taught me anything by now, it will be: you can always make an error in implementing the good algorithm. I am adding the warning to the [README.md](./README.md) file.
