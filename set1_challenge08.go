@@ -36,7 +36,7 @@ func compeareBlock(message []byte, firstIndex, secondIndex, blockSize int) bool 
 	return true
 }
 
-func isDecryptedByECD(message []byte, blockSize int) bool {
+func IsDecryptedByECB(message []byte, blockSize int) bool {
 	for productResult := range product(len(message) / blockSize) {
 		if compeareBlock(message, productResult.FirstField, productResult.SecondField, blockSize) {
 			return true
@@ -52,7 +52,7 @@ func MainSet1Challenge08() {
 	for lineNumber, value := range content {
 		inputByte, _ := hex.DecodeString(value)
 
-		if isDecryptedByECD(inputByte, 16) {
+		if IsDecryptedByECB(inputByte, 16) {
 			println("Line number", lineNumber)
 			println(value)
 		}
