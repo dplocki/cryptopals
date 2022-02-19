@@ -64,7 +64,7 @@ func EncryptAES128CBC(block cipher.Block, dst, src, iv []byte) {
 
 		block.Encrypt(dst, src[:bs])
 
-		previous = src[:bs]
+		previous = dst[:bs]
 		src = src[bs:]
 		dst = dst[bs:]
 	}

@@ -24,7 +24,7 @@ func TestEncryptAES128CBC(t *testing.T) {
 	EncryptAES128CBC(block, cryptedMessage, []byte(planTextMessage), vi)
 	DecryptAES128CBC(block, resultMessage, cryptedMessage, vi)
 
-	if string(resultMessage) == planTextMessage {
+	if string(resultMessage) != planTextMessage {
 		t.Error("innocorrect result", resultMessage)
 	}
 }
