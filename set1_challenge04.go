@@ -29,6 +29,8 @@ func findTheEncodedLine(scanner *bufio.Scanner) ([]byte, byte) {
 }
 
 func MainSet1Challenge04() {
+	println("Detect single-character XOR")
+
 	file, readError := os.Open("4.txt")
 	if readError != nil {
 		fmt.Println(readError)
@@ -40,9 +42,9 @@ func MainSet1Challenge04() {
 	encodedLine, key := findTheEncodedLine(scanner)
 
 	if err := scanner.Err(); err != nil {
-		fmt.Println(err)
+		println(err)
 	} else {
-		fmt.Println("Encoded line:", string(encodedLine))
-		fmt.Println("Key:", string(key))
+		println("Encoded line:", string(encodedLine))
+		println("Key:", string(key))
 	}
 }

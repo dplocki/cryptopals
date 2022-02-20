@@ -7,6 +7,8 @@ import (
 )
 
 func MainSet2Challenge10() {
+	println("Implement CBC mode")
+
 	content := LoadFileContentAsString("10.txt")
 
 	originalStringBytes, err := base64.StdEncoding.DecodeString(content)

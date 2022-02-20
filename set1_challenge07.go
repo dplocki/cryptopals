@@ -7,6 +7,8 @@ import (
 )
 
 func MainSet1Challenge07() {
+	println("AES in ECB mode")
+
 	content := LoadFileContentAsString("7.txt")
 
 	originalStringBytes, err := base64.StdEncoding.DecodeString(content)

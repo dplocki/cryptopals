@@ -47,6 +47,8 @@ func IsDecryptedByECB(message []byte, blockSize int) bool {
 }
 
 func MainSet1Challenge08() {
+	println("Detect AES in ECB mode")
+
 	content := LoadFileContentAsStringsArray("8.txt")
 
 	for lineNumber, value := range content {

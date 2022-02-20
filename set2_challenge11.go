@@ -49,6 +49,8 @@ func EncryptionOracle(key, message []byte) []byte {
 }
 
 func MainSet2Challenge11() {
+	println("An ECB/CBC detection oracle")
+
 	rand.Seed(time.Now().UnixNano())
 
 	plainText := "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"

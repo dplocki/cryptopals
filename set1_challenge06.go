@@ -27,8 +27,9 @@ func findKeyLength(encryptedMessage []byte) byte {
 }
 
 func MainSet1Challenge06() {
-	content := LoadFileContentAsString("6.txt")
+	println("Break repeating-key XOR")
 
+	content := LoadFileContentAsString("6.txt")
 	originalStringBytes, err := base64.StdEncoding.DecodeString(content)
 	if err != nil {
 		panic(fmt.Errorf("some error occured during base64 decode. Error %q", err.Error()))
@@ -51,6 +52,6 @@ func MainSet1Challenge06() {
 
 	result := EncodeRepeatingXor(originalStringBytes, key)
 
-	fmt.Println("Key:", string(key))
-	fmt.Println("Message:\n", string(result))
+	println("Key:", string(key))
+	println("Message:\n", string(result))
 }
