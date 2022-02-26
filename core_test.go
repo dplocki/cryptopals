@@ -45,17 +45,3 @@ func TestHammingDistance(t *testing.T) {
 		t.Error("innocorrect result", result)
 	}
 }
-
-func TestAddPaddingToBlock(t *testing.T) {
-	input := []byte("YELLOW SUBMARINE")
-
-	result := AddPaddingToBlock(input, 20)
-
-	if len(result) != 20 {
-		t.Error("innocorrect size of result", result)
-	}
-
-	if string(result) != "YELLOW SUBMARINE\x04\x04\x04\x04" {
-		t.Error("innocorrect result", result)
-	}
-}
