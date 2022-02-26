@@ -24,7 +24,7 @@ func addRandomPadding(input string) []byte {
 	return result
 }
 
-func EncryptionOracle(key, message []byte) []byte {
+func encryptionOracle(key, message []byte) []byte {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		panic("cannot create cipher")
@@ -57,7 +57,7 @@ func MainSet2Challenge11() {
 	messageWithPadding := addRandomPadding(plainText)
 	key := GenerateAESKey()
 
-	encryptedMessage := EncryptionOracle(key, messageWithPadding)
+	encryptedMessage := encryptionOracle(key, messageWithPadding)
 
 	if IsDecryptedByECB(encryptedMessage, 16) {
 		println("Founded ECB")
