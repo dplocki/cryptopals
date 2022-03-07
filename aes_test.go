@@ -31,7 +31,6 @@ func TestEncryptAES128CBC(t *testing.T) {
 
 func TestAddPaddingToBlock(t *testing.T) {
 	input := []byte("YELLOW SUBMARINE")
-
 	result := AddPaddingToBlock(input, 20)
 
 	if len(result) != 20 {
@@ -39,6 +38,19 @@ func TestAddPaddingToBlock(t *testing.T) {
 	}
 
 	if string(result) != "YELLOW SUBMARINE\x04\x04\x04\x04" {
+		t.Error("innocorrect result", result)
+	}
+}
+
+func TestAddPaddingToBlock_OverBlockSize(t *testing.T) {
+	input := []byte("YELLOW SUBMARINE|YELLOW SUBMARINE")
+	result := AddPaddingToBlock(input, 20)
+
+	if len(result) != 40 {
+		t.Error("innocorrect size of result", result)
+	}
+
+	if string(result) != "YELLOW SUBMARINE|YELLOW SUBMARINE\x07\x07\x07\x07\x07\x07\x07" {
 		t.Error("innocorrect result", result)
 	}
 }

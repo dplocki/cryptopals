@@ -71,14 +71,16 @@ func EncryptAES128CBC(block cipher.Block, dst, src, iv []byte) {
 }
 
 func AddPaddingToBlock(block []byte, blockSize int) []byte {
-	result := make([]byte, blockSize)
+	originalMessageSize := len(block)
+	resultSize := ((originalMessageSize / blockSize) + 1) * blockSize
+	result := make([]byte, resultSize)
 
-	for i := 0; i < len(block); i++ {
+	for i := 0; i < originalMessageSize; i++ {
 		result[i] = block[i]
 	}
 
-	needed := byte(blockSize - len(block))
-	for i := len(block); i < blockSize; i++ {
+	needed := byte(resultSize - originalMessageSize)
+	for i := originalMessageSize; i < resultSize; i++ {
 		result[i] = needed
 	}
 
