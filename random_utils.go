@@ -1,8 +1,8 @@
 package main
 
-import (
-	"crypto/rand"
-)
+import "crypto/rand"
+
+const KeySize int = 16
 
 func GenRandomBytes(size int) (bulk []byte, err error) {
 	bulk = make([]byte, size)
@@ -11,7 +11,7 @@ func GenRandomBytes(size int) (bulk []byte, err error) {
 }
 
 func GenerateAESKey() []byte {
-	key, err := GenRandomBytes(16)
+	key, err := GenRandomBytes(KeySize)
 	if err != nil {
 		panic("cannot generate key")
 	}
