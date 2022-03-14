@@ -48,5 +48,12 @@ func MainSet2Challenge12() {
 	key := GenerateAESKey()
 	secretMessageAsBase64 := HexDecodeToBase64("Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd24gc28gbXkgaGFpciBjYW4gYmxvdwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBqdXN0IHRvIHNheSBoaQpEaWQgeW91IHN0b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK")
 
-	println("Keysize is: ", findKeySize(secretMessageAsBase64, key))
+	keySize := findKeySize(secretMessageAsBase64, key)
+	println("Keysize is: ", keySize)
+
+	if IsDecryptedByECB([]byte(buildString(keySize*2)+secretMessageAsBase64), keySize) {
+		println("Founded ECB")
+	} else {
+		println("Not founded ECB")
+	}
 }
