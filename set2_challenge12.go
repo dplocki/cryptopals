@@ -2,6 +2,8 @@ package main
 
 import (
 	"crypto/aes"
+	"encoding/base64"
+	"strings"
 )
 
 func buildString(lenght int) string {
@@ -14,25 +16,25 @@ func buildString(lenght int) string {
 	return string(result)
 }
 
-func encrypt(encryptedMessage string, key []byte) []byte {
+func encrypt(encryptedMessage, key []byte) []byte {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		panic("cannot create cipher")
 	}
 
-	buffer := AddPaddingToBlock([]byte(encryptedMessage), len(key))
+	buffer := AddPaddingToBlock(encryptedMessage, len(key))
 	result := make([]byte, len(buffer))
 
-	EncryptAES128ECB(block, result, result)
+	EncryptAES128ECB(block, result, buffer)
 
 	return result
 }
 
-func findKeySize(secretMessageAsBase64 string, key []byte) int {
+func findKeySize(secretMessageAsBase64, key []byte) int {
 	originalLeght := len(encrypt(secretMessageAsBase64, key))
 
 	for i := 0; i < 100; i++ {
-		lenghtForI := len(encrypt(secretMessageAsBase64+buildString(i), key))
+		lenghtForI := len(encrypt([]byte(string(secretMessageAsBase64)+buildString(i)), key))
 
 		if lenghtForI > originalLeght {
 			return lenghtForI - originalLeght
@@ -42,18 +44,47 @@ func findKeySize(secretMessageAsBase64 string, key []byte) int {
 	panic("cannot found key size")
 }
 
+func compeare(firstBlock, secondBlock []byte, blockSize int) bool {
+	for i := 0; i < blockSize; i++ {
+		if firstBlock[i] != secondBlock[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+func byteAtTimeDecryption(secretMessage, key []byte, blockSize int) string {
+	result := strings.Builder{}
+
+	currentBase := buildString(blockSize - 1)
+	firstBlock := encrypt([]byte(currentBase+string(secretMessage[0])), key)
+
+	for letter := rune(0); letter <= 255; letter++ {
+		secondBlock := encrypt([]byte(currentBase+string(letter)), key)
+
+		if compeare(firstBlock, secondBlock, blockSize) {
+			result.WriteRune(letter)
+		}
+	}
+
+	return result.String()
+}
+
 func MainSet2Challenge12() {
 	println("Byte-at-a-time ECB decryption (Simple)")
 
 	key := GenerateAESKey()
-	secretMessageAsBase64 := HexDecodeToBase64("Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd24gc28gbXkgaGFpciBjYW4gYmxvdwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBqdXN0IHRvIHNheSBoaQpEaWQgeW91IHN0b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK")
+	secretMessageAsBase64, _ := base64.StdEncoding.DecodeString("Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd24gc28gbXkgaGFpciBjYW4gYmxvdwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBqdXN0IHRvIHNheSBoaQpEaWQgeW91IHN0b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK")
 
 	keySize := findKeySize(secretMessageAsBase64, key)
-	println("Keysize is: ", keySize)
+	println("Keysize is:", keySize)
 
-	if IsDecryptedByECB([]byte(buildString(keySize*2)+secretMessageAsBase64), keySize) {
+	if IsDecryptedByECB(encrypt([]byte(buildString(keySize*2)+string(secretMessageAsBase64)), key), keySize) {
 		println("Founded ECB")
 	} else {
-		println("Not founded ECB")
+		panic("Not founded ECB")
 	}
+
+	println("Decrypted message:", byteAtTimeDecryption(secretMessageAsBase64, key, keySize))
 }
