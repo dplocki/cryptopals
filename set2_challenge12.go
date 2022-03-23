@@ -54,18 +54,28 @@ func compeare(firstBlock, secondBlock []byte, blockSize int) bool {
 	return true
 }
 
+func findLetterForBlock(mask string, block, key []byte, blockSize int) rune {
+	for letter := rune(0); letter <= 255; letter++ {
+		blockForLetter := encrypt([]byte(mask+string(letter)), key)
+
+		if compeare(block, blockForLetter, blockSize) {
+			return letter
+		}
+	}
+
+	panic("coudn't find the letter")
+}
+
 func byteAtTimeDecryption(secretMessage, key []byte, blockSize int) string {
 	result := strings.Builder{}
 
-	currentBase := buildString(blockSize - 1)
-	firstBlock := encrypt([]byte(currentBase+string(secretMessage[0])), key)
+	for index := 1; index <= blockSize; index++ {
+		currentBase := buildString(blockSize-index) + string(secretMessage[:index-1])
+		firstBlock := currentBase + string(secretMessage[index-1])
+		firstBlockEncrypted := encrypt([]byte(firstBlock), key)
+		letter := findLetterForBlock(currentBase, firstBlockEncrypted, key, blockSize)
 
-	for letter := rune(0); letter <= 255; letter++ {
-		secondBlock := encrypt([]byte(currentBase+string(letter)), key)
-
-		if compeare(firstBlock, secondBlock, blockSize) {
-			result.WriteRune(letter)
-		}
+		result.WriteRune(letter)
 	}
 
 	return result.String()
