@@ -54,11 +54,12 @@ func compeare(firstBlock, secondBlock []byte, blockSize int) bool {
 	return true
 }
 
-func findLetterForBlock(mask string, block, key []byte, blockSize int) rune {
+func findLetterForBlock(mask string, block, key []byte) rune {
+	compeareSize := len(mask)
 	for letter := rune(0); letter <= 255; letter++ {
 		blockForLetter := encrypt([]byte(mask+string(letter)), key)
 
-		if compeare(block, blockForLetter, blockSize) {
+		if compeare(block, blockForLetter, compeareSize) {
 			return letter
 		}
 	}
@@ -69,16 +70,20 @@ func findLetterForBlock(mask string, block, key []byte, blockSize int) rune {
 func byteAtTimeDecryption(secretMessage, key []byte, blockSize int) string {
 	result := strings.Builder{}
 
-	for index := 1; index <= blockSize; index++ {
-		currentBase := buildString(blockSize-index) + string(secretMessage[:index-1])
-		firstBlock := currentBase + string(secretMessage[index-1])
-		firstBlockEncrypted := encrypt([]byte(firstBlock), key)
-		letter := findLetterForBlock(currentBase, firstBlockEncrypted, key, blockSize)
+	for {
+		for index := 1; index <= blockSize; index++ {
+			prefixPadding := buildString(blockSize - index)
+			currentBase := prefixPadding + result.String()
+			encryptedMessage := encrypt([]byte(prefixPadding+string(secretMessage)), key)
+			letter := findLetterForBlock(currentBase, encryptedMessage, key)
 
-		result.WriteRune(letter)
+			if result.Len() == len(secretMessage) {
+				return result.String()
+			}
+
+			result.WriteRune(letter)
+		}
 	}
-
-	return result.String()
 }
 
 func MainSet2Challenge12() {
@@ -96,5 +101,10 @@ func MainSet2Challenge12() {
 		panic("Not founded ECB")
 	}
 
-	println("Decrypted message:", byteAtTimeDecryption(secretMessageAsBase64, key, keySize))
+	brakeEncryptedMessage := byteAtTimeDecryption(secretMessageAsBase64, key, keySize)
+	if brakeEncryptedMessage != string(secretMessageAsBase64) {
+		panic("Unable to decrypt message")
+	}
+
+	println("Decrypted message:", brakeEncryptedMessage)
 }
