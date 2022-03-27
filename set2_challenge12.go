@@ -7,13 +7,7 @@ import (
 )
 
 func buildString(lenght int) string {
-	result := make([]byte, lenght)
-
-	for i := 0; i < lenght; i++ {
-		result[i] = 'A'
-	}
-
-	return string(result)
+	return strings.Repeat("A", lenght)
 }
 
 func encrypt(encryptedMessage, key []byte) []byte {
