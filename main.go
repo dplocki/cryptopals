@@ -18,6 +18,7 @@ var Solutions = map[int]func(){
 	10: MainSet2Challenge10,
 	11: MainSet2Challenge11,
 	12: MainSet2Challenge12,
+	13: MainSet2Challenge13,
 }
 
 func parseNumberArgument(parameter string) (int, error) {
