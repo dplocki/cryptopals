@@ -1,6 +1,10 @@
 package main
 
-import "strings"
+import (
+	"math/rand"
+	"strconv"
+	"strings"
+)
 
 func fromQueryParameters(input string) map[string]string {
 	result := make(map[string]string)
@@ -32,6 +36,16 @@ func toQueryParameters(input map[string]string) string {
 	return result.String()
 }
 
+func profileFor(email string) string {
+	result := make(map[string]string)
+
+	result["email"] = email
+	result["uid"] = strconv.Itoa(rand.Int())
+	result["role"] = "user"
+
+	return toQueryParameters(result)
+}
+
 func MainSet2Challenge13() {
 	println("ECB cut-and-paste")
 
@@ -45,4 +59,6 @@ func MainSet2Challenge13() {
 	println("}")
 
 	println(toQueryParameters(query_param_map))
+
+	println(profileFor("foo@bar.com"))
 }
