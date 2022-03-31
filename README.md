@@ -42,3 +42,7 @@ The Golang package [crypto](https://pkg.go.dev/crypto) doesn't support the ECB m
 ### Don't implement your own cryptographic
 
 If this challenges taught me anything by now, it will be: you can always make an error in implementing the good algorithm. I am adding the warning to the [README.md](./README.md) file.
+
+### Down of cryptopals.com
+
+In 31 march 2022 page https://cryptopals.com/ seems stop responding.
