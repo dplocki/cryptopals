@@ -10,13 +10,13 @@ func buildString(lenght int) string {
 	return strings.Repeat("A", lenght)
 }
 
-func encrypt(encryptedMessage, key []byte) []byte {
+func encrypt(message, key []byte) []byte {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		panic("cannot create cipher")
 	}
 
-	buffer := AddPaddingToBlock(encryptedMessage, len(key))
+	buffer := AddPaddingToBlock(message, len(key))
 	result := make([]byte, len(buffer))
 
 	EncryptAES128ECB(block, result, buffer)
